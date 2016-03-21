@@ -1,0 +1,37 @@
+---
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time={{apt_cache_timeout}}
+  become: yes
+  become_method: sudo
+  tags: bootstrap
+
+- name: Apt install required system packages.
+  apt: pkg={{item}} state=installed
+  become: yes
+  become_method: sudo
+  tags: bootstrap
+  with_items:
+    - zookeeper
+    - zookeeperd
+
+- name: Overwrite myid file.
+  template: src=myid.j2 dest=/etc/zookeeper/conf/myid
+  become: yes
+  become_method: sudo
+  tags: deploy
+  notify:
+    - Restart zookeeper
+
+- name: Overwrite default config file
+  template: src=zoo.cfg.j2 dest=/etc/zookeeper/conf/zoo.cfg
+  become: yes
+  become_method: sudo
+  tags: deploy
+  notify:
+    - Restart zookeeper
+
+- name: Start zookeeper service
+  service: name=zookeeper state=started enabled=yes
+  become: yes
+  become_method: sudo
+  tags: deploy

@@ -1,0 +1,5 @@
+# Task for setting up EC2 instances.
+---
+- include: security_groups.yml
+
+- include: ec2_instances.yml
