@@ -6,8 +6,8 @@
   vars:
     ec2_instances:
       - name: "machine1"
-        tags: {Name: demo1, foo1: bar, foo2: bar}
+        tags: {Name: demo1, foo1: '', foo2: bar}
       - name: "machine2"
-        tags: {Name: demo2, foo1: bar, foo2: bar}
+        tags: {Name: demo2, foo1: '', foo3: ''}
   roles:
     - aws

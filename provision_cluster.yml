@@ -1,0 +1,10 @@
+---
+# EC2 dynamic invetory create different permutations of host collections based on instance properties such as tags.
+# See http://codeheaven.io/15-things-you-should-know-about-ansible/ item 12 for more info.
+# Install Java on all instances tagged with "java".
+- name: Install Java on tagged hosts
+  hosts: tag_java
+  gather_facts: true
+  remote_user: ubuntu
+  roles:
+    - java

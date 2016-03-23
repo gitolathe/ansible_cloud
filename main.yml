@@ -1,0 +1,48 @@
+---
+- name: Create EC2 instances
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  # Definition of EC2 instances inspired by https://github.com/chrismeyersfsu/playbook-ec2_properties.
+  vars:
+    ec2_instances:
+      - name: "java1"
+        exact_count: 2
+        count_tag: "java"
+        tags: {Name: java1, java: ''}
+      - name: "machine2"
+        exact_count: 1
+        count_tag: "foo1"
+        tags: {Name: demo2, foo1: '', foo3: ''}
+  roles:
+    - aws
+
+  tasks:
+    - name: Wait for SSH
+      wait_for:
+        host: "{{ item['instances'][0]['public_ip'] }}"
+        port: 22
+        delay: 10
+        timeout: 320
+        state: started
+      with_items: "{{ ec2.results }}"
+
+    - name: Refresh the ec2.py cache
+      shell: ./ec2.py --refresh-cache
+
+    - name: Sub-playbook to provision the EC2 cluster.
+      shell: ansible-playbook -i ec2.py provision_cluster.yml > provision_cluster.log
+
+# This section can be enabled if the issue https://github.com/ansible/ansible/issues/15115 gets resolved.
+#    - name: Refresh inventory
+#      meta: refresh_inventory
+
+# EC2 dynamic invetory create different permutations of host collections based on instance properties such as tags.
+# See http://codeheaven.io/15-things-you-should-know-about-ansible/ item 12 for more info.
+# Install Java on all instances tagged with "java".
+#- name: Install Java on tagged hosts
+#  hosts: tag_java
+#  gather_facts: true
+#  remote_user: ubuntu
+#  roles:
+#    - java
