@@ -8,3 +8,24 @@
   remote_user: ubuntu
   roles:
     - java
+
+- name: Install Zookeeper on tagged hosts
+  hosts: tag_zookeeper
+  gather_facts: true
+  remote_user: ubuntu
+  roles:
+    - zookeeper
+
+- name: Install Mesos on tagged hosts
+  hosts: tag_mesos_master
+  gather_facts: true
+  remote_user: ubuntu
+  roles:
+    - mesos
+
+- name: Install Mesos slaves on tagged hosts
+  hosts: tag_mesos_slave
+  gather_facts: true
+  remote_user: ubuntu
+  roles:
+    - {role: mesos, mesos_install_mode: "master-slave"}

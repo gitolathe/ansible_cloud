@@ -6,14 +6,14 @@
   # Definition of EC2 instances inspired by https://github.com/chrismeyersfsu/playbook-ec2_properties.
   vars:
     ec2_instances:
-      - name: "java1"
-        exact_count: 2
-        count_tag: "java"
-        tags: {Name: java1, java: ''}
-      - name: "machine2"
-        exact_count: 1
-        count_tag: "foo1"
-        tags: {Name: demo2, foo1: '', foo3: ''}
+      - name: "mesos-master"
+        exact_count: 3
+        count_tag: "mesos-master"
+        tags: {Name: mesos-master, java: '', zookeeper: '', mesos_master: ''}
+      - name: "mesos-slave"
+        exact_count: 4
+        count_tag: "mesos-slave"
+        tags: {Name: mesos-slave, docker: '', mesos_slave: ''}
   roles:
     - aws
 
@@ -30,8 +30,8 @@
     - name: Refresh the ec2.py cache
       shell: ./ec2.py --refresh-cache
 
-    - name: Sub-playbook to provision the EC2 cluster.
-      shell: ansible-playbook -i ec2.py provision_cluster.yml > provision_cluster.log
+#    - name: Sub-playbook to provision the EC2 cluster.
+#      shell: ansible-playbook -i ec2.py provision_cluster.yml > provision_cluster.log
 
 # This section can be enabled if the issue https://github.com/ansible/ansible/issues/15115 gets resolved.
 #    - name: Refresh inventory
