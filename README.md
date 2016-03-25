@@ -10,11 +10,12 @@ To try it out do:
    aws_access_key_id = <your_access_key_here>
    aws_secret_access_key = <your_secret_key_here>
    ```
-2. Copy the `ec2.ini`file to `/etc/ansible/ec2.ini`.
-3. Add your `*.pem` file to the `ssh-agent`:
+1. Copy the `ec2.ini`file to `/etc/ansible/ec2.ini`.
+1. Add your `*.pem` file to the `ssh-agent`:
 
    ```
    $ ssh-agent bash 
    $ ssh-add ~/.ssh/keypair.pem 
    ```
-3. Run the playbook as `ansible-playbook -i ec2.py -u ubuntu main.yml`.
+1. Run the playbook as `ansible-playbook -i ec2.py main.yml` to set up the EC2 instances.
+1. Run the playbook as `ansible-playbook -i ec2.py provision_cluster.yml` to provision the instances with Mesos, Docker, Zookeeper etc.
