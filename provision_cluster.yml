@@ -1,13 +1,34 @@
 ---
 # EC2 dynamic invetory create different permutations of host collections based on instance properties such as tags.
 # See http://codeheaven.io/15-things-you-should-know-about-ansible/ item 12 for more info.
-# Install Java on all instances tagged with "java".
+
+- name: Builds /etc/hosts file
+  hosts: ec2
+  become: yes
+  become_method: sudo
+  gather_facts: true
+  remote_user: ubuntu
+  tasks:
+    - template:
+        src=hosts.j2
+        dest=/etc/hosts
+
 - name: Install Java on tagged hosts
   hosts: tag_java
   gather_facts: true
   remote_user: ubuntu
   roles:
     - java
+
+- name: Install Docker on tagged hosts
+  hosts: tag_docker
+  gather_facts: true
+  remote_user: ubuntu
+  vars:
+    repository: "deb https://apt.dockerproject.org/repo ubuntu-trusty main"
+    install_apparmor: true
+  roles:
+    - docker
 
 - name: Install Zookeeper on tagged hosts
   hosts: tag_zookeeper
@@ -21,11 +42,11 @@
   gather_facts: true
   remote_user: ubuntu
   roles:
-    - mesos
+    - { role: mesos, zookeeper_hostnames: "{{ groups.tag_zookeeper | join(':' + zookeeper_client_port + ',')  }}:{{ zookeeper_client_port  }}" }
 
 - name: Install Mesos slaves on tagged hosts
   hosts: tag_mesos_slave
   gather_facts: true
   remote_user: ubuntu
   roles:
-    - {role: mesos, mesos_install_mode: "master-slave"}
+    - { role: mesos, mesos_containerizers: "docker,mesos", mesos_install_mode: "slave", zookeeper_hostnames: "{{ groups.tag_zookeeper | join(':' + zookeeper_client_port + ',')  }}:{{ zookeeper_client_port  }}" }

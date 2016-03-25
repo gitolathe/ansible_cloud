@@ -1,0 +1,3 @@
+---
+repository: "deb https://apt.dockerproject.org/repo debian-jessie main"
+install_apparmor: false

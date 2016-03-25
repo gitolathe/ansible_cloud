@@ -15,7 +15,13 @@
 - name: add apt_repository
   become: yes
   become_method: sudo
-  apt_repository: repo="deb https://apt.dockerproject.org/repo debian-jessie main"
+  apt_repository: repo="{{repository}}"
+
+- name: add apparmor
+  become: yes
+  become_method: sudo
+  apt: name=apparmor update_cache=yes state=latest
+  when: install_apparmor == true
 
 - name: add docker-engine
   become: yes

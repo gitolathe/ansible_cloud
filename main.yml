@@ -13,7 +13,7 @@
       - name: "mesos-slave"
         exact_count: 4
         count_tag: "mesos-slave"
-        tags: {Name: mesos-slave, docker: '', mesos_slave: ''}
+        tags: {Name: mesos-slave, java: '', docker: '', mesos_slave: ''}
   roles:
     - aws
 

@@ -13,6 +13,10 @@ log_dir: /var/log/zookeeper
 zookeeper_dir: /opt/zookeeper-{{zookeeper_version}}
 
 # List of dict (i.e. {zookeeper_hosts:[{host:,id:},{host:,id:},...]})
-zookeeper_hosts:
-  - host: "{{inventory_hostname}}" # the machine running 
-    id: 1
+zookeeper_hosts: "{{groups.tag_zookeeper}}"
+#  - host: "{{inventory_hostname}}" # the machine running 
+#    id: 1
+#zookeeper_hosts:
+#  - host: "{{item}}"
+#    id: "{{loop.index}}"
+#    with_items "{{ groups.tag_zookeeper }}"
