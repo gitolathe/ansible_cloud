@@ -1,6 +1,8 @@
 # ansible_cloud
 Ansible Playbooks for setting up cloud services such as Mesos, Docker and Kubernetes.
 
+Most of the stuff for Marathon, Mesos and Zookeeper is copied from the [AnsibleShipyard](https://github.com/AnsibleShipyard) repositories with few or no tweaks.
+
 To try it out do:
 
 1. Configure `~/.boto` as described in [Boto Config](http://boto.readthedocs.org/en/latest/boto_config_tut.html):
