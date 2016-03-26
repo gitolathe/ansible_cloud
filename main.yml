@@ -5,6 +5,8 @@
   gather_facts: false
   # Definition of EC2 instances inspired by https://github.com/chrismeyersfsu/playbook-ec2_properties.
   vars:
+    ec2_security_group: mesos-cluster
+    ec2_security_group_name: Security Group for the Mesos cluster
     ec2_instances:
       - name: "mesos-master"
         exact_count: 3

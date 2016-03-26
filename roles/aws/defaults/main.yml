@@ -2,12 +2,12 @@
 ---
 ec2_keypair: "AmazonOlaIreland"
 ec2_ami_id: ami-3907d64e
-ec2_security_group: demo
-ec2_security_group_name: Security Group for Demo
+ec2_security_group: aws
+ec2_security_group_name: Security Group for AWS
 ec2_instance_type: t1.micro
 ec2_region: eu-west-1
-ec2_tag_Name: "demo"
+ec2_tag_Name: "aws"
 ec2_tag_Type: "demo"
-ec2_instance_name: "Demo"
+ec2_instance_name: "AWS"
 ec2_tag_Environment: "demo"
 ec2_volume_size: 16

@@ -1,5 +1,0 @@
----
-- hosts: zookeeper
-  roles:
-    - java
-    - zookeeper 

@@ -1,5 +1,0 @@
----
-- hosts: java
-  roles:
-    - java
- 
