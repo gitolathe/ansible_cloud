@@ -8,11 +8,12 @@
     ec2_instances:
       - name: "mesos-master"
         exact_count: 3
-        count_tag: "mesos-master"
-        tags: {Name: mesos-master, java: '', zookeeper: '', mesos_master: ''}
+        count_tag: "mesos_master"
+        tags: {Name: mesos-master, java: '', zookeeper: '', mesos_master: '', marathon: ''}
       - name: "mesos-slave"
         exact_count: 4
-        count_tag: "mesos-slave"
+        count_tag: "mesos_slave"
+        instance_type: "m3.large"
         tags: {Name: mesos-slave, java: '', docker: '', mesos_slave: ''}
   roles:
     - aws

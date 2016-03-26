@@ -3,10 +3,10 @@
 - name: Launch EC2 instance(s)
   ec2:
     key_name: "{{ ec2_keypair }}"
-    group: "{{ ec2_security_group }}"
-    instance_type: "{{ ec2_instance_type }}"
-    region: "{{ ec2_region }}"
-    image: "{{ ec2_ami_id }}"
+    group: "{{ item.security_group | default(ec2_security_group) }}"
+    instance_type: "{{ item.instance_type | default(ec2_instance_type) }}"
+    region: "{{ item.region | default(ec2_region) }}"
+    image: "{{ item.ami_id | default(ec2_ami_id) }}"
     wait: true
     exact_count: "{{ item.exact_count }}"
     count_tag:

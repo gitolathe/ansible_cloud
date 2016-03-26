@@ -1,0 +1,83 @@
+---
+
+- name: Create Marathon conf directory
+  become: yes
+  become_method: sudo
+  file: path=/etc/marathon/conf state=directory
+
+- name: Set required --master option
+  become: yes
+  become_method: sudo
+  template: src=master.j2 dest=/etc/marathon/conf/master
+
+- name: Remove optional --artifact_store option
+  become: yes
+  become_method: sudo
+  file: path=/etc/marathon/conf/artifact_store state=absent
+  when: artifact_store == ""
+
+- name: Set optional --artifact_store option
+  become: yes
+  become_method: sudo
+  template: src=artifact_store.j2 dest=/etc/marathon/conf/artifact_store
+  when: artifact_store != ""
+
+- name: Remove optional --checkpoint option
+  become: yes
+  become_method: sudo
+  file: path=/etc/marathon/conf/?checkpoint state=absent
+  when: checkpoint == ""
+
+- name: Set optional --checkpoint option
+  become: yes
+  become_method: sudo
+  file: path=/etc/marathon/conf/?checkpoint state=touch
+  when: checkpoint != ""
+
+- name: Remove optional --zk option
+  become: yes
+  become_method: sudo
+  file: path=/etc/marathon/conf/zk state=absent
+  when: marathon_zookeeper_state == ""
+
+- name: Set optional --zk option
+  become: yes
+  become_method: sudo
+  template: src=zk.j2 dest=/etc/marathon/conf/zk
+  when: marathon_zookeeper_state != ""
+
+- name: Set --hostname option
+  become: yes
+  become_method: sudo
+  template: src=hostname.j2 dest=/etc/marathon/conf/hostname
+
+- name: Set --http-port option
+  become: yes
+  become_method: sudo
+  template: src=http_port.j2 dest=/etc/marathon/conf/http_port
+  
+- name: Upstart check
+  become: yes
+  become_method: sudo
+  stat: path=/etc/init/
+  register: etc_init_check
+
+- name: systemd check
+  become: yes
+  become_method: sudo
+  stat: path=/usr/lib/systemd/system/
+  register: systemd_check
+  
+- name: Upstart environment variables 
+  become: yes
+  become_method: sudo
+  lineinfile: dest=/etc/init/marathon.conf backup=yes state=present insertbefore='exec.*' line="env {{ item }}"
+  with_items: marathon_env_vars
+  when: etc_init_check.stat.exists == true
+  
+- name: systemd environment variables
+  become: yes
+  become_method: sudo
+  template: src=sysconfig.j2 dest=/etc/sysconfig/marathon 
+  when: systemd_check.stat.exists == true
+

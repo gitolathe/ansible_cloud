@@ -50,3 +50,10 @@
   remote_user: ubuntu
   roles:
     - { role: mesos, mesos_containerizers: "docker,mesos", mesos_install_mode: "slave", zookeeper_hostnames: "{{ groups.tag_zookeeper | join(':' + zookeeper_client_port + ',')  }}:{{ zookeeper_client_port  }}" }
+
+- name: Install Marathon on tagged hosts
+  hosts: tag_marathon
+  gather_facts: true
+  remote_user: ubuntu
+  roles:
+    - { role: marathon, zookeeper_hostnames: "{{ groups.tag_zookeeper | join(':' + zookeeper_client_port + ',')  }}:{{ zookeeper_client_port  }}" }
