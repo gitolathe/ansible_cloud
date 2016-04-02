@@ -21,3 +21,28 @@ To try it out do:
    ```
 1. Run the playbook as `ansible-playbook -i ec2.py main.yml` to set up the EC2 instances.
 1. Run the playbook as `ansible-playbook -i ec2.py provision_cluster.yml` to provision the instances with Mesos, Docker, Zookeeper etc.
+
+## Run a Docker container on Marathon
+
+To run a Docker container on Marathon:
+
+*docker.json*
+```
+{
+  "id": "tutum-hello-world",
+  "cpus": 0.2,
+  "mem": 20.0,
+  "instances": 1,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "tutum/hello-world",
+      "network": "BRIDGE",
+      "portMappings": [
+        { "containerPort": 80, "hostPort": 0, "servicePort": 0, "protocol": "tcp" }
+      ]
+    }
+  }
+}
+```
+Post the container defintion to Marathon: `curl -X POST localhost:8080/v2/apps -d @Desktop\docker.json -H "Content-type: application/json"`.
