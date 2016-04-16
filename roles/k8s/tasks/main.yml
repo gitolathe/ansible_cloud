@@ -1,0 +1,42 @@
+---
+- name: Install GIT binaries.
+  become: yes
+  become_method: sudo
+  apt: name=git-core update_cache=yes state=latest
+
+- name: Download Go lang.
+  get_url: url="{{go_lang_url}}" dest="{{go_download_dir}}"
+  
+#- name: Create Go diectory
+#  become: yes
+#  become_method: sudo
+#  file: path=/usr/local/go state=directory
+
+- name: Unpack Go
+  become: yes
+  become_method: sudo
+  command: tar -C /usr/local -xzf "{{go_download_dir}}"
+
+- name: Install Make
+  become: yes
+  become_method: sudo
+  apt: name=make update_cache=yes state=latest
+
+- name: Install GCC
+  become: yes
+  become_method: sudo
+  apt: name=build-essential update_cache=yes state=latest
+
+- name: Get K8s repo.
+  git: repo="{{k8s_git_repo}}"
+       dest="{{k8s_checkout_dir}}"
+
+- name: Build K8s-Mesos
+  become: yes
+  become_method: sudo
+  environment:
+     PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin"
+     KUBERNETES_CONTRIB: mesos
+  command: make release-skip-tests
+  args:
+     chdir: "{{k8s_checkout_dir}}"
