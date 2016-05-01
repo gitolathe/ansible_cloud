@@ -3,4 +3,11 @@ go_lang_url: https://storage.googleapis.com/golang/go1.6.linux-amd64.tar.gz
 go_download_dir: /tmp/go1.6.linux-amd64.tar.gz
 
 k8s_git_repo: https://github.com/kubernetes/kubernetes
-k8s_checkout_dir: /tmp/k8s
+k8s_checkout_dir: /k8s/k8s
+
+etcd_name: etcd
+etcd_image: quay.io/coreos/etcd:v2.2.1
+etcd_ports: 4001:4001,7001:7001
+etcd_env:
+  listen-client-urls: http://0.0.0.0:4001
+  advertise-client-urls: http://"{{ansible_all_ipv4_addresses[0]}}":4001

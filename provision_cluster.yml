@@ -57,3 +57,15 @@
   remote_user: ubuntu
   roles:
     - { role: marathon, zookeeper_hostnames: "{{ groups.tag_zookeeper | join(':' + zookeeper_client_port + ',')  }}:{{ zookeeper_client_port  }}" }
+
+- name: Install K8s on tagged hosts
+  hosts: tag_k8s
+  gather_facts: true
+  remote_user: ubuntu
+  vars:
+    repository: "deb https://apt.dockerproject.org/repo ubuntu-trusty main"
+    install_apparmor: true
+  roles:
+    - docker
+    - k8s
+

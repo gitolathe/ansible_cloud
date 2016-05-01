@@ -17,6 +17,11 @@
         count_tag: "mesos_slave"
         instance_type: "m3.large"
         tags: {Name: mesos-slave, java: '', docker: '', mesos_slave: ''}
+      - name: "k8s-master"
+        exact_count: 1
+        count_tag: "k8s"
+        instance_type: "m3.large"
+        tags: {Name: k8s-master, k8s, ''}
   roles:
     - aws
 

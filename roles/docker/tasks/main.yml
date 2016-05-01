@@ -17,6 +17,11 @@
   become_method: sudo
   apt_repository: repo="{{repository}}"
 
+- name: add linux-image-extra package (for aufs storage driver)
+  become: yes
+  become_method: sudo
+  apt: name=linux-image-extra-{{ansible_kernel}} state=latest
+
 - name: add apparmor
   become: yes
   become_method: sudo

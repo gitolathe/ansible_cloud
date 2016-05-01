@@ -10,4 +10,6 @@ ec2_tag_Name: "aws"
 ec2_tag_Type: "demo"
 ec2_instance_name: "AWS"
 ec2_tag_Environment: "demo"
-ec2_volume_size: 16
+volumes:
+  - device_name: /dev/xvda
+    volume_size: 20

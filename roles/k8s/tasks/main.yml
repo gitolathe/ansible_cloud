@@ -7,11 +7,6 @@
 - name: Download Go lang.
   get_url: url="{{go_lang_url}}" dest="{{go_download_dir}}"
   
-#- name: Create Go diectory
-#  become: yes
-#  become_method: sudo
-#  file: path=/usr/local/go state=directory
-
 - name: Unpack Go
   become: yes
   become_method: sudo
@@ -27,7 +22,17 @@
   become_method: sudo
   apt: name=build-essential update_cache=yes state=latest
 
+- name: Create K8s symlink
+  become: yes
+  become_method: sudo
+  file:
+    src: /mnt
+    dest: /k8s
+    state: link
+
 - name: Get K8s repo.
+  become: yes
+  become_method: sudo
   git: repo="{{k8s_git_repo}}"
        dest="{{k8s_checkout_dir}}"
 
@@ -36,7 +41,25 @@
   become_method: sudo
   environment:
      PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin"
-     KUBERNETES_CONTRIB: mesos
+#     KUBERNETES_CONTRIB: mesos
   command: make release-skip-tests
   args:
      chdir: "{{k8s_checkout_dir}}"
+
+- name: Install python-pip
+  become: yes
+  apt: name=python-pip update_cache=yes state=latest
+
+- name: Install docker-py with pip
+  become: true
+  pip: name="docker-py" state=latest
+
+- name: Start etcd container
+  become: yes
+  become_method: sudo
+  docker:
+    name: "{{etcd_name}}"
+    image: "{{etcd_image}}"
+    hostname: "{{ansible_hostname}}"
+    ports: "{{etcd_ports}}"
+    env: "{{etcd_env}}"
