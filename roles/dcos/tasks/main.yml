@@ -1,0 +1,13 @@
+---
+- name: Make genconf directory
+  file: path=genconf state=directory
+
+- name: Create genconf/config.yaml
+  template: src=config.yaml.j2 dest=genconf/config.yaml
+
+- name: Copy ip-detect script
+  copy: src=ip-detect-aws.sh dest=genconf/ip-detect.sh mode=0700
+
+- name: Download DCOS installer
+#  get_url: url={{dcos_installer_download_url}} dest=genconf/dcos_generate_config.sh mode=0700 validate_certs=no
+  shell: curl -O {{dcos_installer_download_url}} -o genconf/dcos_generate_config.sh

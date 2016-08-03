@@ -69,3 +69,10 @@
     - docker
     - k8s
 
+- name: Install DCOS bootstrap on tagged host
+  hosts: tag_dcos_bootstrap
+  gather_facts: true
+  remote_user: ubuntu
+  roles:
+    - dcos
+

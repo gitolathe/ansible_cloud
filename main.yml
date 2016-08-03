@@ -9,19 +9,25 @@
     ec2_security_group_name: Security Group for the Mesos cluster
     ec2_instances:
       - name: "mesos-master"
-        exact_count: 3
+        exact_count: 0
         count_tag: "mesos_master"
         tags: {Name: mesos-master, java: '', zookeeper: '', mesos_master: '', marathon: ''}
       - name: "mesos-slave"
-        exact_count: 4
+        exact_count: 0
         count_tag: "mesos_slave"
         instance_type: "m3.large"
         tags: {Name: mesos-slave, java: '', docker: '', mesos_slave: ''}
       - name: "k8s-master"
-        exact_count: 1
+        exact_count: 0
         count_tag: "k8s"
         instance_type: "m3.large"
-        tags: {Name: k8s-master, k8s, ''}
+        tags: {Name: k8s-master, k8s: ''}
+      - name: "dcos-bootstrap"
+        exact_count: 1
+        count_tag: "dcos_bootstrap"
+        instance_type: "m3.large"
+        ec2_ami_id: "ami-7abd0209"
+        tags: {Name: dcos-bootstrap, dcos_bootstrap: ''}
   roles:
     - aws
 

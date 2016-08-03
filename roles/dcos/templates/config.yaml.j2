@@ -1,0 +1,13 @@
+---
+bootstrap_url: http://{{ansible_eth0.ipv4.address}}:{{bootstrap_port}}
+cluster_name: '{{cluster_name}}'
+exhibitor_storage_backend: static
+ip_detect_filename: /genconf/ip-detect
+master_list:
+- <master-private-ip-1>
+- <master-private-ip-2>
+- <master-private-ip-3>
+resolvers:
+{% for resolver in dns_resolvers %}
+- {{resolver}}
+{% endfor %}
