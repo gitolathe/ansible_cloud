@@ -22,12 +22,18 @@
         count_tag: "k8s"
         instance_type: "m3.large"
         tags: {Name: k8s-master, k8s: ''}
+      - name: "dcos_master"
+        exact_count: 1
+        count_tag: "dcos_master"
+#        instance_type: "m3.large"
+        ec2_ami_id: "ami-7abd0209"
+        tags: {Name: dcos-master, dcos_master: ''}
       - name: "dcos-bootstrap"
         exact_count: 1
         count_tag: "dcos_bootstrap"
         instance_type: "m3.large"
         ec2_ami_id: "ami-7abd0209"
-        tags: {Name: dcos-bootstrap, dcos_bootstrap: ''}
+        tags: {Name: dcos-bootstrap, docker: '', dcos_bootstrap: ''}
   roles:
     - aws
 

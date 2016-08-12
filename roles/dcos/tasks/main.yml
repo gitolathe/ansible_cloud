@@ -6,8 +6,17 @@
   template: src=config.yaml.j2 dest=genconf/config.yaml
 
 - name: Copy ip-detect script
-  copy: src=ip-detect-aws.sh dest=genconf/ip-detect.sh mode=0700
+  copy: src=ip-detect-aws.sh dest=genconf/ip-detect mode=0700
 
 - name: Download DCOS installer
 #  get_url: url={{dcos_installer_download_url}} dest=genconf/dcos_generate_config.sh mode=0700 validate_certs=no
-  shell: curl -O {{dcos_installer_download_url}} -o genconf/dcos_generate_config.sh
+  shell: curl -O {{dcos_installer_download_url}} -o dcos_generate_config.sh
+
+- name: Make dcos_generate_config.sh executable
+  file: path=dcos_generate_config.sh state=touch mode=0700
+
+- name: Execute DCOS installer
+  become: yes
+  become_method: sudo
+  shell: ./dcos_generate_config.sh
+
