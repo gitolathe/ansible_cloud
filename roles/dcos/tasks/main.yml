@@ -15,8 +15,10 @@
 - name: Make dcos_generate_config.sh executable
   file: path=dcos_generate_config.sh state=touch mode=0700
 
-- name: Execute DCOS installer
+- name: Generate DCOS config
   become: yes
   become_method: sudo
   shell: ./dcos_generate_config.sh
 
+- name: Start the DCOS installer via Docker
+  
