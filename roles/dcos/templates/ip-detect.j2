@@ -1,0 +1,3 @@
+#!/bin/sh
+# Uses Ansible facts internal ipv4 address
+echo {{ ansible_eth0.ipv4.address }}
