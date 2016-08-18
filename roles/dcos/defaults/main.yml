@@ -1,6 +1,6 @@
 ---
 cluster_name: "dcos-cluster"
-bootstrap_port: 5555
+bootstrap_port: 9000
 dns_resolvers:
   - 8.8.4.4
   - 8.8.8.8

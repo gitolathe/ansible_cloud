@@ -20,5 +20,15 @@
   become_method: sudo
   shell: ./dcos_generate_config.sh
 
-#- name: Start the DCOS installer via Docker
+- name: Start the DCOS installer via Docker
+  become: yes
+  become_method: sudo
+  docker:
+    name: dcos_bootstrap_nginx
+    image: nginx
+    state: started
+    ports:
+    - "{{bootstrap_port}}:80"
+    volumes:
+    - "{{ansible_env.PWD}}/genconf/serve:/usr/share/nginx/html:ro"
   

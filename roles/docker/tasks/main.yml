@@ -38,3 +38,17 @@
   become_method: sudo
   service: name=docker state=started
 
+- name: install pip
+  become: yes
+  become_method: sudo
+  apt: name={{item}} update_cache=yes state=latest
+  with_items:
+  - python-pip
+  - python-dev
+  - build-essential
+
+- name: install docker-py
+  become: yes
+  become_method: sudo
+  pip: name=docker-py state=latest
+
