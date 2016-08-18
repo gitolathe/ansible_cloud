@@ -1,0 +1,7 @@
+---
+cluster_name: "dcos-cluster"
+bootstrap_port: 9000
+dns_resolvers:
+  - 8.8.4.4
+  - 8.8.8.8
+dcos_installer_download_url: "https://downloads.dcos.io/dcos/EarlyAccess/dcos_generate_config.sh"

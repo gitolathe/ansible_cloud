@@ -25,14 +25,16 @@
       - name: "dcos_master"
         exact_count: 1
         count_tag: "dcos_master"
-#        instance_type: "m3.large"
-        ec2_ami_id: "ami-7abd0209"
-        tags: {Name: dcos-master, dcos_master: ''}
+        instance_type: "m3.large"
+#       Ubunty 16.04 AMI
+        ami_id: "ami-c06b1eb3"
+        tags: {Name: dcos-master, docker: '', dcos_master: ''}
       - name: "dcos-bootstrap"
         exact_count: 1
         count_tag: "dcos_bootstrap"
         instance_type: "m3.large"
-        ec2_ami_id: "ami-7abd0209"
+#	CentOS AMI
+#        ami_id: "ami-7abd0209"
         tags: {Name: dcos-bootstrap, docker: '', dcos_bootstrap: ''}
   roles:
     - aws

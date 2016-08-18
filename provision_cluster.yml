@@ -74,5 +74,13 @@
   gather_facts: true
   remote_user: ubuntu
   roles:
+    - dcos_bootstrap
+
+- name: Install DCOS master on tagged hosts
+  hosts: tag_dcos_master
+  gather_facts: true
+  remote_user: ubuntu
+  roles:
+    - python
     - dcos
 

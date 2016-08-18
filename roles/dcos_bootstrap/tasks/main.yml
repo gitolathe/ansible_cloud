@@ -1,0 +1,34 @@
+---
+- name: Make genconf directory
+  file: path=genconf state=directory
+
+- name: Create genconf/config.yaml
+  template: src=config.yaml.j2 dest=genconf/config.yaml
+
+- name: Create ip-detect script
+  template: src=ip-detect.j2 dest=genconf/ip-detect mode=0700
+
+- name: Download DCOS installer
+#  get_url: url={{dcos_installer_download_url}} dest=genconf/dcos_generate_config.sh mode=0700 validate_certs=no
+  shell: curl -O {{dcos_installer_download_url}} -o dcos_generate_config.sh
+
+- name: Make dcos_generate_config.sh executable
+  file: path=dcos_generate_config.sh state=touch mode=0700
+
+- name: Generate DCOS config
+  become: yes
+  become_method: sudo
+  shell: ./dcos_generate_config.sh
+
+- name: Start the DCOS installer via Docker
+  become: yes
+  become_method: sudo
+  docker:
+    name: dcos_bootstrap_nginx
+    image: nginx
+    state: started
+    ports:
+    - "{{bootstrap_port}}:80"
+    volumes:
+    - "{{ansible_env.PWD}}/genconf/serve:/usr/share/nginx/html:ro"
+  
