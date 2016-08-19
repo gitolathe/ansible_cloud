@@ -1,7 +1,0 @@
----
-
-- name: Install python.
-  become: yes
-  become_method: sudo
-  raw: apt-get install python
-

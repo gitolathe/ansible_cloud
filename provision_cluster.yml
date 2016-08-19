@@ -2,6 +2,15 @@
 # EC2 dynamic invetory create different permutations of host collections based on instance properties such as tags.
 # See http://codeheaven.io/15-things-you-should-know-about-ansible/ item 12 for more info.
 
+- name: Install/upgrade Python
+  hosts: tag_dcos_master 
+  become: yes
+  become_method: sudo
+  gather_facts: false
+  remote_user: ubuntu
+  pre_tasks:
+    - raw: sudo apt-get -y install python
+
 - name: Builds /etc/hosts file
   hosts: ec2
   become: yes
@@ -81,6 +90,5 @@
   gather_facts: true
   remote_user: ubuntu
   roles:
-    - python
     - dcos
 
