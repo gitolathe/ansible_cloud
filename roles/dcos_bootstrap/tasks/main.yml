@@ -5,8 +5,8 @@
 - name: Create genconf/config.yaml
   template: src=config.yaml.j2 dest=genconf/config.yaml
 
-- name: Create ip-detect script
-  template: src=ip-detect.j2 dest=genconf/ip-detect mode=0700
+- name: Copy ip-detect script
+  copy: src=ip-detect.sh dest=genconf/ip-detect mode=0700
 
 - name: Download DCOS installer
 #  get_url: url={{dcos_installer_download_url}} dest=genconf/dcos_generate_config.sh mode=0700 validate_certs=no

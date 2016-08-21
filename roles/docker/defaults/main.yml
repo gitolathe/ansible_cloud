@@ -1,0 +1,4 @@
+---
+# Default Docker storage driver, see https://docs.docker.com/engine/userguide/storagedriver/imagesandcontainers/
+# for more information.
+storage_driver: overlay2
