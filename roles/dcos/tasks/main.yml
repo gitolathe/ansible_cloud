@@ -29,8 +29,21 @@
     - { src: '/bin/rm', dest: '/usr/bin/rm' }
     - { src: '/usr/sbin/useradd', dest: '/sbin/useradd' }
 
-- name: Run the DCOS installer
+- name: Run the DCOS installer for masters
   become: yes
   become_method: sudo
   shell: bash {{dcos_temp_dir}}/{{bootstrap_script}} master
+  when: inventory_hostname in groups['tag_dcos_master']
+
+- name: Run the DCOS installer for slaves
+  become: yes
+  become_method: sudo
+  shell: bash {{dcos_temp_dir}}/{{bootstrap_script}} slave
+  when: inventory_hostname in groups['tag_dcos_slave']
+
+- name: Run the DCOS installer for public slaves
+  become: yes
+  become_method: sudo
+  shell: bash {{dcos_temp_dir}}/{{bootstrap_script}} slave_public
+  when: inventory_hostname in groups['tag_dcos_slave_public']
 

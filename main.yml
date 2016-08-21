@@ -28,7 +28,21 @@
         instance_type: "m3.large"
 #       Ubunty 16.04 AMI
         ami_id: "ami-c06b1eb3"
-        tags: {Name: dcos-master, python: '', docker: '', dcos_master: ''}
+        tags: {Name: dcos-master, python: '', docker: '', dcos_cluster_node: '', dcos_master: ''}
+      - name: "dcos_slave"
+        exact_count: 1
+        count_tag: "dcos_slave"
+        instance_type: "m3.large"
+#       Ubunty 16.04 AMI
+        ami_id: "ami-c06b1eb3"
+        tags: {Name: dcos-slave, python: '', docker: '', dcos_cluster_node: '', dcos_slave: ''}
+      - name: "dcos_slave_public"
+        exact_count: 0
+        count_tag: "dcos_slave_public"
+        instance_type: "m3.large"
+#       Ubunty 16.04 AMI
+        ami_id: "ami-c06b1eb3"
+        tags: {Name: dcos-slave-public, python: '', docker: '', dcos_cluster_node: '', dcos_slave_public: ''}
       - name: "dcos-bootstrap"
         exact_count: 1
         count_tag: "dcos_bootstrap"

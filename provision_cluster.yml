@@ -82,8 +82,8 @@
   roles:
     - dcos_bootstrap
 
-- name: Install DCOS master on tagged hosts
-  hosts: tag_dcos_master
+- name: Install DCOS master, slave and public slaves on tagged hosts
+  hosts: tag_dcos_cluster_node
   gather_facts: true
   remote_user: ubuntu
   roles:
