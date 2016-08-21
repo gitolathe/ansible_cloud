@@ -28,7 +28,7 @@
         instance_type: "m3.large"
 #       Ubunty 16.04 AMI
         ami_id: "ami-c06b1eb3"
-        tags: {Name: dcos-master, docker: '', dcos_master: ''}
+        tags: {Name: dcos-master, python: '', docker: '', dcos_master: ''}
       - name: "dcos-bootstrap"
         exact_count: 1
         count_tag: "dcos_bootstrap"
@@ -40,6 +40,9 @@
     - aws
 
   tasks:
+    - name: Refresh inventory
+      meta: refresh_inventory
+
     - name: Wait for SSH
       wait_for:
         host: "{{ item['instances'][0]['public_ip'] }}"

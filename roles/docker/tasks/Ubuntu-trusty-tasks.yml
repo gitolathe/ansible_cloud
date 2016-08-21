@@ -1,0 +1,9 @@
+---
+- name: install required applications
+  become: yes
+  become_method: sudo
+  apt: name={{item}} update_cache=yes state=latest
+  with_items:
+  - apt-transport-https
+  - ca-certificates
+  - linux-image-extra-{{ansible_kernel}}

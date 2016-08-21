@@ -3,7 +3,7 @@
 # See http://codeheaven.io/15-things-you-should-know-about-ansible/ item 12 for more info.
 
 - name: Install/upgrade Python
-  hosts: tag_dcos_master 
+  hosts: tag_python 
   become: yes
   become_method: sudo
   gather_facts: false
@@ -33,9 +33,6 @@
   hosts: tag_docker
   gather_facts: true
   remote_user: ubuntu
-  vars:
-    repository: "deb https://apt.dockerproject.org/repo ubuntu-trusty main"
-    install_apparmor: true
   roles:
     - docker
 

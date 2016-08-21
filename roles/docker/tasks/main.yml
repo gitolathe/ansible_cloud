@@ -1,11 +1,16 @@
 ---
-- name: install apt-transport-https and cert
-  become: yes
-  become_method: sudo
-  apt: name={{item}} update_cache=yes state=latest
-  with_items:
-  - apt-transport-https
-  - ca-certificates
+- name: include platform specific variables.
+  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_release }}-vars.yml"
+
+- name: include platform specific tasks.
+  include: "{{ ansible_distribution }}-{{ ansible_distribution_release }}-tasks.yml"
+
+#- name: install required applications
+#  become: yes
+#  become_method: sudo
+#  apt: name={{item}} update_cache=yes state=latest
+#  with_items:
+#    - "{{ required_apps }}"
 
 - name: add keys
   become: yes
@@ -17,10 +22,10 @@
   become_method: sudo
   apt_repository: repo="{{repository}}"
 
-- name: add linux-image-extra package (for aufs storage driver)
-  become: yes
-  become_method: sudo
-  apt: name=linux-image-extra-{{ansible_kernel}} state=latest
+#- name: add linux-image-extra package (for aufs storage driver)
+#  become: yes
+#  become_method: sudo
+#  apt: name=linux-image-extra-{{ansible_kernel}} state=latest
 
 - name: add apparmor
   become: yes

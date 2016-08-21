@@ -7,6 +7,7 @@
   with_items:
   - unzip
   - ipset
+  - selinux-utils
 
 - name: Create temporary DCOS dirctory
   file: path="{{dcos_temp_dir}}" state=directory
