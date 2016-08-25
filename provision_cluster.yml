@@ -7,16 +7,14 @@
   become: yes
   become_method: sudo
   gather_facts: false
-  remote_user: ubuntu
   pre_tasks:
     - raw: sudo apt-get -y install python
 
 - name: Builds /etc/hosts file
-  hosts: ec2
+  hosts: tag_ansible_managed
   become: yes
   become_method: sudo
   gather_facts: true
-  remote_user: ubuntu
   tasks:
     - template:
         src=hosts.j2
@@ -25,49 +23,42 @@
 - name: Install Java on tagged hosts
   hosts: tag_java
   gather_facts: true
-  remote_user: ubuntu
   roles:
     - java
 
 - name: Install Docker on tagged hosts
   hosts: tag_docker
   gather_facts: true
-  remote_user: ubuntu
   roles:
     - docker
 
 - name: Install Zookeeper on tagged hosts
   hosts: tag_zookeeper
   gather_facts: true
-  remote_user: ubuntu
   roles:
     - zookeeper
 
 - name: Install Mesos on tagged hosts
   hosts: tag_mesos_master
   gather_facts: true
-  remote_user: ubuntu
   roles:
     - { role: mesos, zookeeper_hostnames: "{{ groups.tag_zookeeper | join(':' + zookeeper_client_port + ',')  }}:{{ zookeeper_client_port  }}" }
 
 - name: Install Mesos slaves on tagged hosts
   hosts: tag_mesos_slave
   gather_facts: true
-  remote_user: ubuntu
   roles:
     - { role: mesos, mesos_containerizers: "docker,mesos", mesos_install_mode: "slave", zookeeper_hostnames: "{{ groups.tag_zookeeper | join(':' + zookeeper_client_port + ',')  }}:{{ zookeeper_client_port  }}" }
 
 - name: Install Marathon on tagged hosts
   hosts: tag_marathon
   gather_facts: true
-  remote_user: ubuntu
   roles:
     - { role: marathon, zookeeper_hostnames: "{{ groups.tag_zookeeper | join(':' + zookeeper_client_port + ',')  }}:{{ zookeeper_client_port  }}" }
 
 - name: Install K8s on tagged hosts
   hosts: tag_k8s
   gather_facts: true
-  remote_user: ubuntu
   vars:
     repository: "deb https://apt.dockerproject.org/repo ubuntu-trusty main"
     install_apparmor: true
@@ -78,14 +69,12 @@
 - name: Install DCOS bootstrap on tagged host
   hosts: tag_dcos_bootstrap
   gather_facts: true
-  remote_user: ubuntu
   roles:
     - dcos_bootstrap
 
 - name: Install DCOS master, slave and public slaves on tagged hosts
   hosts: tag_dcos_cluster_node
   gather_facts: true
-  remote_user: ubuntu
   roles:
     - dcos
 

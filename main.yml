@@ -5,6 +5,10 @@
   gather_facts: false
   # Definition of EC2 instances inspired by https://github.com/chrismeyersfsu/playbook-ec2_properties.
   vars:
+#   CentOS 7 (x86_64) - with Updates HVM ()
+    dcos_ami_id: "ami-7abd0209"
+#   Ubuntu 16.04  AMI
+#    dcos_ami_id: "ami-c06b1eb3"
     ec2_security_group: dcos-cluster
     ec2_security_group_name: Security Group for the DC/OS cluster
     ec2_instances:
@@ -23,33 +27,31 @@
         instance_type: "m3.large"
         tags: {Name: k8s-master, k8s: ''}
       - name: "dcos_master"
-        exact_count: 1
+        exact_count: 3
         count_tag: "dcos_master"
         instance_type: "m3.large"
-#       Ubunty 16.04 AMI
-        ami_id: "ami-c06b1eb3"
-        tags: {Name: dcos-master, python: '', docker: '', dcos_cluster_node: '', dcos_master: ''}
+        ami_id: "{{ dcos_ami_id }}"
+#        tags: {Name: dcos-master, ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_master: ''}
+        tags: {Name: dcos-master, ansible_managed: '', docker: '', dcos_cluster_node: '', dcos_master: ''}
       - name: "dcos_slave"
-        exact_count: 1
+        exact_count: 0
         count_tag: "dcos_slave"
         instance_type: "m3.large"
-#       Ubunty 16.04 AMI
-        ami_id: "ami-c06b1eb3"
-        tags: {Name: dcos-slave, python: '', docker: '', dcos_cluster_node: '', dcos_slave: ''}
+        ami_id: "{{ dcos_ami_id }}"
+        tags: {Name: dcos-slave, ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_slave: ''}
       - name: "dcos_slave_public"
         exact_count: 0
         count_tag: "dcos_slave_public"
         instance_type: "m3.large"
-#       Ubunty 16.04 AMI
-        ami_id: "ami-c06b1eb3"
-        tags: {Name: dcos-slave-public, python: '', docker: '', dcos_cluster_node: '', dcos_slave_public: ''}
+        ami_id: "{{ dcos_ami_id }}"
+        tags: {Name: dcos-slave-public, ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_slave_public: ''}
       - name: "dcos-bootstrap"
         exact_count: 1
         count_tag: "dcos_bootstrap"
         instance_type: "m3.large"
-#	CentOS AMI
-#        ami_id: "ami-7abd0209"
-        tags: {Name: dcos-bootstrap, docker: '', dcos_bootstrap: ''}
+        ami_id: "{{ dcos_ami_id }}"
+#        tags: {Name: dcos-bootstrap, ansible_managed: '', python: '', docker: '', dcos_bootstrap: ''}
+        tags: {Name: dcos-bootstrap, ansible_managed: '', docker: '', dcos_bootstrap: ''}
   roles:
     - aws
 

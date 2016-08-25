@@ -1,30 +1,20 @@
 ---
-- name: include platform specific variables.
-  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_release }}-vars.yml"
+#- name: include platform specific variables.
+#  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_release }}-vars.yml"
 
-- name: include platform specific tasks.
-  include: "{{ ansible_distribution }}-{{ ansible_distribution_release }}-tasks.yml"
-
-- name: add keys
-  become: yes
-  become_method: sudo
-  apt_key: keyserver=hkp://p80.pool.sks-keyservers.net:80 id=58118E89F3A912897C070ADBF76221572C52609D
-
-- name: add apt_repository
-  become: yes
-  become_method: sudo
-  apt_repository: repo="{{repository}}"
+- name: include platform specific tasks & variables.
+  include: "{{ ansible_distribution }}/main.yml"
 
 - name: add apparmor
   become: yes
   become_method: sudo
-  apt: name=apparmor update_cache=yes state=latest
+  package: name=apparmor state=latest
   when: install_apparmor == true
 
 - name: add docker-engine
   become: yes
   become_method: sudo
-  apt: name=docker-engine update_cache=yes state=latest
+  package: name=docker-engine state=latest
   
 - name: start docker service
   become: yes
@@ -40,8 +30,8 @@
   become_method: sudo
   lineinfile:
     dest=/lib/systemd/system/docker.service
-    regexp='^ExecStart=/usr/bin/dockerd .*$'
-    line='ExecStart=/usr/bin/dockerd -H fd:// -s {{ storage_driver }}'
+    regexp="^ExecStart=/usr/bin/dockerd .*$"
+    line="ExecStart=/usr/bin/dockerd -H fd:// -s {{ storage_driver }}"
   notify:
   - reload systemd
   - restart docker
@@ -49,11 +39,11 @@
 - name: install pip
   become: yes
   become_method: sudo
-  apt: name={{item}} update_cache=yes state=latest
-  with_items:
-  - python-pip
-  - python-dev
-  - build-essential
+  package: name={{item}} state=latest
+  with_items: "{{ pip_packages }}"
+#  - python-pip
+#  - "{{ python_development }}"
+#  - build-essential
 
 - name: install docker-py
   become: yes

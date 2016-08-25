@@ -2,3 +2,13 @@
 # Default Docker storage driver, see https://docs.docker.com/engine/userguide/storagedriver/imagesandcontainers/
 # for more information.
 storage_driver: overlay2
+
+install_apparmor: false
+
+# Default pip packages.
+#python_development: python-dev
+pip_packages:
+  - python-pip
+  - python-dev
+  - build-essential
+
