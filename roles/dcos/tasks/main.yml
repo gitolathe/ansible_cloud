@@ -7,9 +7,14 @@
   become_method: sudo
   package: name={{item}} state=latest
   with_items:
-    - unzip
-    - ipset
-    - selinux-utils
+  - ipset
+  - unzip
+  - curl
+
+- name: Set SELinux to permissive mode.
+  become: yes
+  become_method: sudo
+  selinux: policy=targeted state=permissive
 
 - name: Create temporary DCOS dirctory
   file: path="{{dcos_temp_dir}}" state=directory

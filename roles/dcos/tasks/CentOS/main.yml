@@ -1,2 +1,6 @@
 ---
 
+- name: Add group 'nogroup' as required by DC/OS installer.
+  become: yes
+  become_method: sudo
+  group: name=nogroup state=present

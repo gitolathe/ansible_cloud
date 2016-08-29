@@ -1,6 +1,3 @@
 ---
-- name: include platform specific variables.
-  include_vars: "{{ ansible_distribution_release }}-vars.yml"
 
-- name: include platform specific tasks.
-  include: "{{ ansible_distribution_release }}-tasks.yml"
+docker_service_path: /lib/systemd/system/docker.service

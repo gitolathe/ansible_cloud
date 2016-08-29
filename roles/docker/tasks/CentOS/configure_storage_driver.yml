@@ -1,0 +1,25 @@
+---
+
+- name: configure modules-load.d for overlay driver.
+  become: yes
+  become_method: sudo
+  copy: src=CentOS/overlay.conf dest=/etc/modules-load.d/overlay.conf
+
+- name: load the overlay module
+  become: yes
+  become_method: sudo
+  modprobe: name=overlay state=present
+
+- name: make sure the docker.service.d directory exists.
+  become: yes
+  become_method: sudo
+  file: path=/etc/systemd/system/docker.service.d state=directory
+
+- name: configure the Docker storage driver override.
+  become: yes
+  become_method: sudo
+  copy: src=CentOS/override.conf dest=/etc/systemd/system/docker.service.d/override.conf
+  notify:
+  - reload systemd
+  - restart docker
+
