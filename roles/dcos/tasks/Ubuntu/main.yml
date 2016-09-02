@@ -11,3 +11,8 @@
     - { src: '/bin/rm', dest: '/usr/bin/rm' }
     - { src: '/usr/sbin/useradd', dest: '/sbin/useradd' }
 
+- name: Update all packages to the latest version
+  become: yes
+  become_method: sudo
+  apt: upgrade=dist
+

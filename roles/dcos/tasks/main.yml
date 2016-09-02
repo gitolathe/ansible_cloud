@@ -11,11 +11,6 @@
   - unzip
   - curl
 
-- name: Set SELinux to permissive mode.
-  become: yes
-  become_method: sudo
-  selinux: policy=targeted state=permissive
-
 - name: Create temporary DCOS dirctory
   file: path="{{dcos_temp_dir}}" state=directory
 
@@ -31,15 +26,15 @@
   shell: bash {{dcos_temp_dir}}/{{bootstrap_script}} master
   when: inventory_hostname in groups['tag_dcos_master']
 
-#- name: Run the DCOS installer for slaves
-#  become: yes
-#  become_method: sudo
-#  shell: bash {{dcos_temp_dir}}/{{bootstrap_script}} slave
-#  when: inventory_hostname in groups['tag_dcos_slave']
+- name: Run the DCOS installer for slaves
+  become: yes
+  become_method: sudo
+  shell: bash {{dcos_temp_dir}}/{{bootstrap_script}} slave
+  when: inventory_hostname in groups['tag_dcos_slave']
 
-#- name: Run the DCOS installer for public slaves
-#  become: yes
-#  become_method: sudo
-#  shell: bash {{dcos_temp_dir}}/{{bootstrap_script}} slave_public
-#  when: inventory_hostname in groups['tag_dcos_slave_public']
+- name: Run the DCOS installer for public slaves
+  become: yes
+  become_method: sudo
+  shell: bash {{dcos_temp_dir}}/{{bootstrap_script}} slave_public
+  when: inventory_hostname in groups['tag_dcos_slave_public']
 

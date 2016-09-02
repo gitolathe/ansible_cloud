@@ -4,3 +4,9 @@
   become: yes
   become_method: sudo
   group: name=nogroup state=present
+
+- name: Set SELinux to permissive mode.
+  become: yes
+  become_method: sudo
+  selinux: policy=targeted state=permissive
+

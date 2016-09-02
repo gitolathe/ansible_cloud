@@ -6,9 +6,9 @@
   # Definition of EC2 instances inspired by https://github.com/chrismeyersfsu/playbook-ec2_properties.
   vars:
 #   CentOS 7 (x86_64) - with Updates HVM ()
-    dcos_ami_id: "ami-7abd0209"
+#    dcos_ami_id: "ami-7abd0209"
 #   Ubuntu 16.04  AMI
-#    dcos_ami_id: "ami-c06b1eb3"
+    dcos_ami_id: "ami-c06b1eb3"
     ec2_security_group: dcos-cluster
     ec2_security_group_name: Security Group for the DC/OS cluster
     ec2_instances:
@@ -31,10 +31,10 @@
         count_tag: "dcos_master"
         instance_type: "m3.large"
         ami_id: "{{ dcos_ami_id }}"
-#        tags: {Name: dcos-master, ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_master: ''}
-        tags: {Name: dcos-master, ansible_managed: '', docker: '', dcos_cluster_node: '', dcos_master: ''}
+        tags: {Name: dcos-master, ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_master: ''}
+#        tags: {Name: dcos-master, ansible_managed: '', docker: '', dcos_cluster_node: '', dcos_master: ''}
       - name: "dcos_slave"
-        exact_count: 0
+        exact_count: 3
         count_tag: "dcos_slave"
         instance_type: "m3.large"
         ami_id: "{{ dcos_ami_id }}"
@@ -50,8 +50,8 @@
         count_tag: "dcos_bootstrap"
         instance_type: "m3.large"
         ami_id: "{{ dcos_ami_id }}"
-#        tags: {Name: dcos-bootstrap, ansible_managed: '', python: '', docker: '', dcos_bootstrap: ''}
-        tags: {Name: dcos-bootstrap, ansible_managed: '', docker: '', dcos_bootstrap: ''}
+        tags: {Name: dcos-bootstrap, ansible_managed: '', python: '', docker: '', dcos_bootstrap: ''}
+#        tags: {Name: dcos-bootstrap, ansible_managed: '', docker: '', dcos_bootstrap: ''}
   roles:
     - aws
 
