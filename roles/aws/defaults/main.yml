@@ -1,11 +1,13 @@
 # Defaults for EC2 configuration.
 ---
-ec2_keypair: "AmazonOlaIreland"
 ec2_ami_id: ami-3907d64e
-ec2_security_group: aws
-ec2_security_group_name: Security Group for AWS
+ec2_security_group: sg_dcos
+ec2_security_group_name: Security Group for DC/OS
 ec2_instance_type: t1.micro
 ec2_region: eu-west-1
+ec2_az1: eu-west-1a
+ec2_az2: eu-west-1b
+ec2_az3: eu-west-1c
 ec2_tag_Name: "aws"
 ec2_tag_Type: "demo"
 ec2_instance_name: "AWS"

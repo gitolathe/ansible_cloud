@@ -1,5 +1,6 @@
-# Create EC2 instances.
 ---
+
+# Create EC2 instances.
 - name: Launch EC2 instance(s)
   ec2:
     key_name: "{{ ec2_keypair }}"
@@ -7,6 +8,7 @@
     instance_type: "{{ item.instance_type | default(ec2_instance_type) }}"
     region: "{{ item.region | default(ec2_region) }}"
     image: "{{ item.ami_id | default(ec2_ami_id) }}"
+    vpc_subnet_id: "{{ vpc_facts.subnets[0].id }}"
     wait: true
     exact_count: "{{ item.exact_count }}"
     count_tag: "{{ item.count_tag }}"

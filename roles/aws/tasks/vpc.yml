@@ -1,0 +1,36 @@
+---
+
+- name: Configure AWS VPC
+  ec2_vpc:
+    state: present
+    cidr_block: 172.22.0.0/16
+    resource_tags: { Name: dcos-vpc, "Environment":"Development" }
+    subnets:
+      - cidr: 172.22.1.0/24
+        az: "{{ ec2_az1 }}"
+        resource_tags: { Name: dcos-master, "Environment":"Dev" }
+      - cidr: 172.22.2.0/24
+        az: "{{ ec2_az2 }}"
+        resource_tags: { Name: dcos-slave, "Environment":"Dev" }
+      - cidr: 172.22.3.0/24
+        az: "{{ ec2_az3 }}"
+        resource_tags: { Name: dcos-public-slave, "Environment":"Dev" }
+    internet_gateway: True
+    route_tables:
+      - subnets:
+          - 172.22.2.0/24
+          - 172.22.3.0/24
+        routes:
+          - dest: 0.0.0.0/0
+            gw: igw
+      - subnets:
+          - 172.22.1.0/24
+        routes:
+          - dest: 0.0.0.0/0
+            gw: igw
+    region: "{{ ec2_region }}"
+  register: vpc
+
+- set_fact:
+    vpc_facts: "{{ vpc }}"
+
