@@ -50,6 +50,7 @@
         count_tag: "dcos_bootstrap"
         instance_type: "m3.large"
         ami_id: "{{ dcos_ami_id }}"
+        assign_public_ip: True
         tags: {Name: dcos-bootstrap, ansible_managed: '', python: '', docker: '', dcos_bootstrap: ''}
 #        tags: {Name: dcos-bootstrap, ansible_managed: '', docker: '', dcos_bootstrap: ''}
   roles:

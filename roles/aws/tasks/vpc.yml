@@ -8,21 +8,9 @@
     subnets:
       - cidr: 172.22.1.0/24
         az: "{{ ec2_az1 }}"
-        resource_tags: { Name: dcos-master, "Environment":"Dev" }
-      - cidr: 172.22.2.0/24
-        az: "{{ ec2_az2 }}"
-        resource_tags: { Name: dcos-slave, "Environment":"Dev" }
-      - cidr: 172.22.3.0/24
-        az: "{{ ec2_az3 }}"
-        resource_tags: { Name: dcos-public-slave, "Environment":"Dev" }
+        resource_tags: { Name: dcos-subnet, "Environment":"Dev" }
     internet_gateway: True
     route_tables:
-      - subnets:
-          - 172.22.2.0/24
-          - 172.22.3.0/24
-        routes:
-          - dest: 0.0.0.0/0
-            gw: igw
       - subnets:
           - 172.22.1.0/24
         routes:
@@ -33,4 +21,19 @@
 
 - set_fact:
     vpc_facts: "{{ vpc }}"
+
+- name: Create Internet GW
+  ec2_vpc_igw:
+    vpc_id: "{{ vpc.vpc_id }}"
+    region: "{{ ec2_region }}"
+    state: present
+  register: igw
+
+- name: Tagging the new internet gateway created
+  ec2_tag:
+    resource: "{{ igw.gateway_id }}"
+    state: present
+    region: "{{ ec2_region }}"
+    tags:
+      Name: dcos-gateway
 

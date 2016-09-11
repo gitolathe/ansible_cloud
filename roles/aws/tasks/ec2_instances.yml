@@ -9,6 +9,7 @@
     region: "{{ item.region | default(ec2_region) }}"
     image: "{{ item.ami_id | default(ec2_ami_id) }}"
     vpc_subnet_id: "{{ vpc_facts.subnets[0].id }}"
+    assign_public_ip: "{{ item.assign_public_ip | default(ec2_assign_public_ip) }}"
     wait: true
     exact_count: "{{ item.exact_count }}"
     count_tag: "{{ item.count_tag }}"
