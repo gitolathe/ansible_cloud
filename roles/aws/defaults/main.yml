@@ -1,18 +1,33 @@
 # Defaults for EC2 configuration.
 ---
+# Common
+ec2_region: eu-west-1
+
+# EC2 instance defaults
 ec2_ami_id: ami-3907d64e
+ec2_instance_type: t1.micro
+ec2_assign_public_ip: False
+#volumes:
+#  - device_name: /dev/xvda
+#    volume_size: 20
+
+# Security group defaults
 ec2_security_group: sg_dcos
 ec2_security_group_name: Security Group for DC/OS
-ec2_instance_type: t1.micro
-ec2_region: eu-west-1
+
+# VPC defaults
+vpc_state: present
+vpc_cidr_block: 172.22.1.0/24
+vpc_resource_tags: { Name: dcos-vpc, "Environment":"Development" }
+vpc_subnets:
+  subnet:
+    cidr: 172.22.1.0/24
+    az: eu-west-1a
+    resource_tags: { Name: dcos-subnet, "Environment":"Dev" }
+    routes:
+      - dest: 0.0.0.0/0
+        gw: igw
+vpc_internet_gw: True
 ec2_az1: eu-west-1a
 ec2_az2: eu-west-1b
 ec2_az3: eu-west-1c
-ec2_assign_public_ip: False
-ec2_tag_Name: "aws"
-ec2_tag_Type: "demo"
-ec2_instance_name: "AWS"
-ec2_tag_Environment: "demo"
-volumes:
-  - device_name: /dev/xvda
-    volume_size: 20

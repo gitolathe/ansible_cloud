@@ -1,0 +1,18 @@
+---
+#Configuration of AWS Elastic Load Balancer for the VPC.
+
+- local_action:
+    module: ec2_elb_lb
+    name: "test-vpc"
+    scheme: internal
+    state: present
+    instance_ids:
+      - i-abcd1234
+    purge_instance_ids: true
+    subnets:
+      - subnet-abcd1234
+      - subnet-1a2b3c4d
+    listeners:
+      - protocol: http # options are http, https, ssl, tcp
+        load_balancer_port: 80
+        instance_port: 80
