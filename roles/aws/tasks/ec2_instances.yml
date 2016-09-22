@@ -8,7 +8,7 @@
     instance_type: "{{ item.instance_type | default(ec2_instance_type) }}"
     region: "{{ item.region | default(ec2_region) }}"
     image: "{{ item.ami_id | default(ec2_ami_id) }}"
-    vpc_subnet_id: "{{ vpc_facts.subnets[0].id }}"
+    vpc_subnet_id: "{{ vpc_subnet_facts.subnets[item.subnet_index | default(0)].id }}"
     assign_public_ip: "{{ item.assign_public_ip | default(ec2_assign_public_ip) }}"
     wait: true
     exact_count: "{{ item.exact_count }}"

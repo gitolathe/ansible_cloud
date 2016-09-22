@@ -4,7 +4,7 @@
   local_action:
     module: ec2_group
     name: "{{ ec2_security_group }}"
-    vpc_id: "{{ vpc_facts.vpc_id }}"
+    vpc_id: "{{ vpc.vpc.id }}"
     description: "{{ ec2_security_group_name }}"
     region: "{{ ec2_region }}"
     rules:

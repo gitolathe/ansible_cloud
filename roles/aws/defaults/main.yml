@@ -17,15 +17,23 @@ ec2_security_group_name: Security Group for DC/OS
 
 # VPC defaults
 vpc_state: present
-vpc_cidr_block: 172.22.1.0/24
+vpc_cidr_block: 10.0.0.0/16
 vpc_resource_tags: { Name: dcos-vpc, "Environment":"Development" }
 vpc_subnets:
-  - cidr: 172.22.1.0/24
+  - cidr: 10.0.0.0/24
     az: eu-west-1a
-    resource_tags: { Name: dcos-subnet, "Environment":"Dev" }
+    resource_tags: { Name: dcos-subnet-public, "Environment":"Dev", "SubnetType":"Private" }
+  - cidr: 10.0.1.0/24
+    az: eu-west-1a
+    resource_tags: { Name: dcos-subnet-private, "Environment":"Dev", "SubnetType":"Public" }
 vpc_route_tables:
   - subnets:
-     - 172.22.1.0/24
+     - 10.0.0.0/24
+    routes:
+     - dest: 0.0.0.0/0
+       gw: igw
+  - subnets:
+     - 10.0.1.0/24
     routes:
      - dest: 0.0.0.0/0
        gw: igw
