@@ -17,7 +17,7 @@
     vpc_id: "{{ vpc.vpc.id }}"
     cidr: 10.0.0.0/24
     region: "{{ ec2_region }}"
-    resource_tags: { Name: dcos-subnet-public }
+    resource_tags: { Name: subnet-public }
   register: public_subnet
 
 - debug: var=public_subnet verbosity=1
@@ -28,7 +28,7 @@
     vpc_id: "{{ vpc.vpc.id }}"
     cidr: 10.0.1.0/24
     region: "{{ ec2_region }}"
-    resource_tags: { Name: dcos-subnet-private }
+    resource_tags: { Name: subnet-private }
   register: private_subnet
 
 - debug: var=private_subnet verbosity=1
