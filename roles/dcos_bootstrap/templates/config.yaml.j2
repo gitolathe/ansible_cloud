@@ -14,6 +14,7 @@ bootstrap_url: http://{{ansible_eth0.ipv4.address}}:{{bootstrap_port}}
 cluster_name: '{{cluster_name}}'
 exhibitor_storage_backend: static
 ip_detect_filename: /genconf/ip-detect
+master_discovery: static
 master_list:
 {% for item in groups.tag_dcos_master %}
 - {{hostvars[item]['ec2_private_ip_address']}}

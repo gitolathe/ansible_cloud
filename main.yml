@@ -44,17 +44,21 @@
         count_tag: "dcos_slave_public"
         instance_type: "m3.large"
         ami_id: "{{ dcos_ami_id }}"
-        subnet_index: 1
-        tags: {Name: dcos-slave-public, ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_slave_public: ''}
+        assign_public_ip: True
+        tags: {Name: dcos-slave-public, private_host: '', ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_slave_public: '', subnet: 'subnet-public'}
       - name: "dcos-bootstrap"
         exact_count: 1
         count_tag: "dcos_bootstrap"
         instance_type: "m3.large"
         ami_id: "{{ dcos_ami_id }}"
-        subnet_index: 1
         assign_public_ip: True
-        tags: {Name: dcos-bootstrap, ssh_jumphost: '', ansible_managed: '', python: '', docker: '', dcos_bootstrap: '', subnet: 'subnet-public'}
-#        tags: {Name: dcos-bootstrap, ssh_jumphost: '', ansible_managed: '', docker: '', dcos_bootstrap: '', subnet: 'subnet-public'}
+        tags: {Name: dcos-bootstrap, private_host: '', ansible_managed: '', python: '', docker: '', dcos_bootstrap: '', subnet: 'subnet-public'}
+#        tags: {Name: dcos-bootstrap, private_host: '', ansible_managed: '', docker: '', dcos_bootstrap: '', subnet: 'subnet-public'}
+      - name: "dcos-ssh-jumphost"
+        exact_count: 1
+        count_tag: "ssh_jumphost"
+        assign_public_ip: True
+        tags: {Name: dcos-ssh-jumphost, ssh_jumphost: '', subnet: 'subnet-public'}
   roles:
     - aws
 

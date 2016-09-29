@@ -24,17 +24,17 @@
   become: yes
   become_method: sudo
   shell: bash {{dcos_temp_dir}}/{{bootstrap_script}} master
-  when: inventory_hostname in groups['tag_dcos_master']
+  when: groups['tag_dcos_master'] is defined and inventory_hostname in groups['tag_dcos_master']
 
 - name: Run the DCOS installer for slaves
   become: yes
   become_method: sudo
   shell: bash {{dcos_temp_dir}}/{{bootstrap_script}} slave
-  when: inventory_hostname in groups['tag_dcos_slave']
+  when: groups['tag_dcos_slave'] is defined and inventory_hostname in groups['tag_dcos_slave']
 
 - name: Run the DCOS installer for public slaves
   become: yes
   become_method: sudo
   shell: bash {{dcos_temp_dir}}/{{bootstrap_script}} slave_public
-  when: inventory_hostname in groups['tag_dcos_slave_public']
+  when: groups['tag_dcos_slave_public'] is defined and inventory_hostname in groups['tag_dcos_slave_public']
 
