@@ -2,8 +2,8 @@
 
 - name: Create AWS VPC
   ec2_vpc_net:
-    name: dcos-vpc
-    cidr_block: 10.0.0.0/16
+    name: "{{ vpc_name }}"
+    cidr_block: "{{ vpc_cidr_block }}"
     region: "{{ ec2_region }}"
     tags: "{{ vpc_resource_tags }}"
     tenancy: default
@@ -55,19 +55,37 @@
     resource: "{{ igw.gateway_id }}"
     state: present
     region: "{{ ec2_region }}"
-    tags:
-      Name: dcos-gateway
+    tags: "{{ vpc_internet_gw_tags }}"
+
+- name: Allocate a new elastic IP
+  ec2_eip:
+    region: "{{ ec2_region }}"
+    in_vpc: True
+  register: eip
+
+- debug: var=eip verbosity=1
+
+# TODO: when at Ansible v. 2.2 replace this with "ec2_vpc_nat_gateway".
+- name: Create the NAT gateway.
+  command: aws ec2 create-nat-gateway --subnet-id "{{ public_subnet.subnet.id }}" --allocation-id "{{ eip.allocation_id }}"
+  register: nat_output
+
+- name: Set the NAT facts.
+  set_fact: 
+    nat: "{{ nat_output.stdout|from_json }}"
+
+- debug: var=nat verbosity=1
 
 - name: Configure private subnet route table
   ec2_vpc_route_table:
     vpc_id: "{{ vpc.vpc.id }}"
     region: "{{ ec2_region }}"
-    tags: { Name: dcos-private-route-table }
+    tags: { Name: private-route-table }
     subnets:
       - "{{ private_subnet.subnet.id }}"
     routes:
       - dest: 0.0.0.0/0
-        gateway_id: "{{ igw.gateway_id }}"
+        gateway_id: "{{ nat.NatGateway.NatGatewayId }}"
   register: vpc_private_route_table
 
 - debug: var=vpc_private_route_table verbosity=1
@@ -76,7 +94,7 @@
   ec2_vpc_route_table:
     vpc_id: "{{ vpc.vpc.id }}"
     region: "{{ ec2_region }}"
-    tags: { Name: dcos-public-route-table }
+    tags: { Name: public-route-table }
     subnets:
       - "{{ public_subnet.subnet.id }}"
     routes:
@@ -85,4 +103,12 @@
   register: vpc_public_route_table
 
 - debug: var=vpc_public_route_table verbosity=1
+
+- name: Allocate a new elastic IP
+  ec2_eip:
+    region: "{{ ec2_region }}"
+    in_vpc: True
+  register: eip
+
+- debug: var=eip
 

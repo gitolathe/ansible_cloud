@@ -12,20 +12,21 @@ ec2_assign_public_ip: False
 #    volume_size: 20
 
 # Security group defaults
-ec2_security_group: sg_dcos
-ec2_security_group_name: Security Group for DC/OS
+ec2_security_group: sg_cluster
+ec2_security_group_name: Security Group for Cluster
 
 # VPC defaults
+vpc_name: cluster-vpc
 vpc_state: present
 vpc_cidr_block: 10.0.0.0/16
-vpc_resource_tags: { Name: dcos-vpc, "Environment":"Development" }
+vpc_resource_tags: { Name: cluster-vpc, "Environment":"Development" }
 vpc_subnets:
   - cidr: 10.0.0.0/24
     az: eu-west-1a
-    resource_tags: { Name: dcos-subnet-public, "Environment":"Dev", "SubnetType":"Private" }
+    resource_tags: { Name: cluster-subnet-public, "Environment":"Dev", "SubnetType":"Private" }
   - cidr: 10.0.1.0/24
     az: eu-west-1a
-    resource_tags: { Name: dcos-subnet-private, "Environment":"Dev", "SubnetType":"Public" }
+    resource_tags: { Name: cluster-subnet-private, "Environment":"Dev", "SubnetType":"Public" }
 vpc_route_tables:
   - subnets:
      - 10.0.0.0/24
@@ -38,3 +39,5 @@ vpc_route_tables:
      - dest: 0.0.0.0/0
        gw: igw
 vpc_internet_gw: True
+vpc_internet_gw_tags: { Name: cluster-gateway }
+

@@ -40,7 +40,7 @@
         ami_id: "{{ dcos_ami_id }}"
         tags: {Name: dcos-slave, private_host: '', ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_slave: ''}
       - name: "dcos_slave_public"
-        exact_count: 0
+        exact_count: 1
         count_tag: "dcos_slave_public"
         instance_type: "m3.large"
         ami_id: "{{ dcos_ami_id }}"
