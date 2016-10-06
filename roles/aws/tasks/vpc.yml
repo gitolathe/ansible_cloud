@@ -17,10 +17,24 @@
     vpc_id: "{{ vpc.vpc.id }}"
     cidr: 10.0.0.0/24
     region: "{{ ec2_region }}"
+    az: "{{ ec2_availability_zones[0] }}"
     resource_tags: { Name: subnet-public }
   register: public_subnet
 
-- debug: var=public_subnet verbosity=1
+- debug: var=public_subnet verbosity=2
+
+# Create second public subnet.
+- name: Create VPC public subnet
+  ec2_vpc_subnet:
+    state: present
+    vpc_id: "{{ vpc.vpc.id }}"
+    cidr: 10.0.2.0/24
+    region: "{{ ec2_region }}"
+    az: "{{ ec2_availability_zones[1] }}"
+    resource_tags: { Name: subnet-public2 }
+  register: public_subnet2
+
+- debug: var=public_subnet2 verbosity=2
 
 - name: Create VPC private subnet
   ec2_vpc_subnet:
@@ -28,10 +42,11 @@
     vpc_id: "{{ vpc.vpc.id }}"
     cidr: 10.0.1.0/24
     region: "{{ ec2_region }}"
+    az: "{{ ec2_availability_zones[0] }}"
     resource_tags: { Name: subnet-private }
   register: private_subnet
 
-- debug: var=private_subnet verbosity=1
+- debug: var=private_subnet verbosity=2
 
 - ec2_vpc_subnet_facts:
     region: "{{ ec2_region }}"
@@ -70,6 +85,9 @@
   command: aws ec2 create-nat-gateway --subnet-id "{{ public_subnet.subnet.id }}" --allocation-id "{{ eip.allocation_id }}"
   register: nat_output
 
+- name: Wait a bit for NAT gateway to stabilize.
+  pause: seconds=30
+
 - name: Set the NAT facts.
   set_fact: 
     nat: "{{ nat_output.stdout|from_json }}"
@@ -90,13 +108,14 @@
 
 - debug: var=vpc_private_route_table verbosity=1
 
-- name: Configure public subnet route table
+- name: Configure public subnet(s) route table
   ec2_vpc_route_table:
     vpc_id: "{{ vpc.vpc.id }}"
     region: "{{ ec2_region }}"
     tags: { Name: public-route-table }
     subnets:
       - "{{ public_subnet.subnet.id }}"
+      - "{{ public_subnet2.subnet.id }}"
     routes:
       - dest: 0.0.0.0/0
         gateway_id: "{{ igw.gateway_id }}"
@@ -104,11 +123,11 @@
 
 - debug: var=vpc_public_route_table verbosity=1
 
-- name: Allocate a new elastic IP
-  ec2_eip:
+- ec2_vpc_route_table_facts:
     region: "{{ ec2_region }}"
-    in_vpc: True
-  register: eip
+    filters:
+      vpc-id: "{{ vpc.vpc.id }}"
+  register: vpc_route_table_facts
 
-- debug: var=eip
+- debug: var=vpc_route_table_facts verbosity=1
 

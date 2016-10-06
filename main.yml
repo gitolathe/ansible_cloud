@@ -46,6 +46,13 @@
         ami_id: "{{ dcos_ami_id }}"
         assign_public_ip: True
         tags: {Name: dcos-slave-public, private_host: '', ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_slave_public: '', subnet: 'subnet-public'}
+      - name: "dcos_slave_public2"
+        exact_count: 1
+        count_tag: "dcos_slave_public2"
+        instance_type: "m3.large"
+        ami_id: "{{ dcos_ami_id }}"
+        assign_public_ip: True
+        tags: {Name: dcos-slave-public2, private_host: '', ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_slave_public: '', subnet: 'subnet-public2'}
       - name: "dcos-bootstrap"
         exact_count: 1
         count_tag: "dcos_bootstrap"
