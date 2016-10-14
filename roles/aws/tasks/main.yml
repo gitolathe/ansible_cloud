@@ -7,3 +7,6 @@
 - include: security_groups.yml
 
 - include: ec2_instances.yml
+
+- include: elb.yml
+

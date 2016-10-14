@@ -1,3 +1,2 @@
 ---
-ec2_keypair: "{{ lookup('env', 'AWS_EC2_KEY_PAIR') }}"
 

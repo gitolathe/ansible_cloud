@@ -1,18 +1,30 @@
 ---
 #Configuration of AWS Elastic Load Balancer for the VPC.
 
+- debug: var=elb_ssl_certificate_id verbosity=1
+
+- fail: msg="No SSL certificate is defined for ELB. Check AWS_EC2_LB_CERT environment variable." 
+  when: elb_ssl_certificate_id is undefined or elb_ssl_certificate_id == ""
+
+- set_fact:
+    elb_nodes: "{{ hostvars | get_members(groups, 'tag_dcos_slave_public') | map(attribute='ec2_id') | list  }}"
+
+- debug: var=elb_nodes verbosity=1
+
 - local_action:
     module: ec2_elb_lb
-    name: "test-vpc"
-    scheme: internal
-    state: present
-    instance_ids:
-      - i-abcd1234
+    name: "{{ elb_name }}"
+    scheme: "{{ elb_scheme }}"
+    state: "{{ elb_state }}"
+    instance_ids: "{{ hostvars | get_members(groups, 'tag_dcos_slave_public') | map(attribute='ec2_id') | list  }}"
     purge_instance_ids: true
+    region: "{{ ec2_region }}"
     subnets:
-      - subnet-abcd1234
-      - subnet-1a2b3c4d
-    listeners:
-      - protocol: http # options are http, https, ssl, tcp
-        load_balancer_port: 80
-        instance_port: 80
+      - "{{ public_subnet.subnet.id }}"
+      - "{{ public_subnet2.subnet.id }}"
+    listeners: "{{ elb_listeners }}"
+    tags: "{{ elb_tags }}"
+  register: elb
+
+- debug: var=elb verbosity=1
+

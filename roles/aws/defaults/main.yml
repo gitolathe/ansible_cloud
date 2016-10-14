@@ -1,6 +1,7 @@
 # Defaults for EC2 configuration.
 ---
 # Common
+ec2_keypair: "{{ lookup('env', 'AWS_EC2_KEY_PAIR') }}"
 ec2_region: eu-west-1
 ec2_availability_zones:
   - eu-west-1a
@@ -44,4 +45,21 @@ vpc_route_tables:
        gw: igw
 vpc_internet_gw: True
 vpc_internet_gw_tags: { Name: cluster-gateway }
+
+# ELB defaults
+elb_name: cluster-elb
+elb_scheme: internet-facing
+elb_state: present
+elb_ssl_certificate_id:	"{{ lookup('env', 'AWS_EC2_LB_CERT') }}"
+elb_listeners:
+  - protocol: http # options are http, https, ssl, tcp
+    load_balancer_port: 80
+    instance_port: 80
+  - protocol: https
+    load_balancer_port: 443
+    instance_protocol: http # optional, defaults to value of protocol setting
+    instance_port: 80
+    # ssl certificate required for https or ssl
+    ssl_certificate_id: "{{ elb_ssl_certificate_id }}"
+elb_tags: { Name: cluster-lb, "Environment":"Dev" }
 
