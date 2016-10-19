@@ -23,3 +23,5 @@ resolvers:
 {% for resolver in dns_resolvers %}
 - {{resolver}}
 {% endfor %}
+oauth_enabled: "{{ dcos_oauth_enabled }}"
+

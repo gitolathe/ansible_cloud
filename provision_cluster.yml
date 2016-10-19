@@ -78,3 +78,9 @@
   roles:
     - dcos
 
+- name: Install DCOS cli on DCOS controller hosts
+  hosts: tag_dcos_controller
+  gather_facts: true
+  roles:
+    - dcos_controller
+

@@ -41,18 +41,18 @@
         tags: {Name: dcos-slave, private_host: '', ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_slave: ''}
       - name: "dcos_slave_public"
         exact_count: 1
-        count_tag: "dcos_slave_public"
+        count_tag: "dcos_slave_public1"
         instance_type: "m3.large"
         ami_id: "{{ dcos_ami_id }}"
         assign_public_ip: True
-        tags: {Name: dcos-slave-public, private_host: '', ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_slave_public: '', subnet: 'subnet-public'}
+        tags: {Name: dcos-slave-public, private_host: '', ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_slave_public: '', subnet: 'subnet-public', dcos_slave_public1: ''}
       - name: "dcos_slave_public2"
         exact_count: 1
         count_tag: "dcos_slave_public2"
         instance_type: "m3.large"
         ami_id: "{{ dcos_ami_id }}"
         assign_public_ip: True
-        tags: {Name: dcos-slave-public2, private_host: '', ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_slave_public: '', subnet: 'subnet-public2'}
+        tags: {Name: dcos-slave-public2, private_host: '', ansible_managed: '', python: '', docker: '', dcos_cluster_node: '', dcos_slave_public: '', subnet: 'subnet-public2', dcos_slave_public2: ''}
       - name: "dcos-bootstrap"
         exact_count: 1
         count_tag: "dcos_bootstrap"
@@ -65,14 +65,11 @@
         exact_count: 1
         count_tag: "ssh_jumphost"
         assign_public_ip: True
-        tags: {Name: dcos-ssh-jumphost, ssh_jumphost: '', subnet: 'subnet-public'}
+        tags: {Name: dcos-ssh-jumphost, ssh_jumphost: '', dcos-controller: '', subnet: 'subnet-public'}
   roles:
     - aws
 
   tasks:
-    - name: Refresh inventory
-      meta: refresh_inventory
-
     - name: Wait for SSH
       wait_for:
         host: "{{ item['instances'][0]['public_ip'] }}"
@@ -82,22 +79,3 @@
         state: started
       with_items: "{{ ec2.results }}"
 
-    - name: Refresh the ec2.py cache
-      shell: ./ec2.py --refresh-cache
-
-#    - name: Sub-playbook to provision the EC2 cluster.
-#      shell: ansible-playbook -i ec2.py provision_cluster.yml > provision_cluster.log
-
-# This section can be enabled if the issue https://github.com/ansible/ansible/issues/15115 gets resolved.
-#    - name: Refresh inventory
-#      meta: refresh_inventory
-
-# EC2 dynamic invetory create different permutations of host collections based on instance properties such as tags.
-# See http://codeheaven.io/15-things-you-should-know-about-ansible/ item 12 for more info.
-# Install Java on all instances tagged with "java".
-#- name: Install Java on tagged hosts
-#  hosts: tag_java
-#  gather_facts: true
-#  remote_user: ubuntu
-#  roles:
-#    - java
