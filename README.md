@@ -30,6 +30,9 @@ The following environment varibles can be configured for Ansible lookup
 * AWS_EC2_LB_CERT: the `arn` resource for the AWS ELB certificate.
 * AWS_S3_ELB_LOGS_BUCKET_NAME: the name of the S3 bucket where to store the ELB logs.
 
+### DC/OS
+* DCOS_CONTROLLER_INSTALL_DEMOS: `true` - install demo(s) (default), `false` - skip demo installation.
+
 ## Run a Docker container on Marathon
 
 To run a Docker container on Marathon:

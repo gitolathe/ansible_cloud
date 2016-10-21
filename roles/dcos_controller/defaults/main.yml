@@ -3,5 +3,5 @@
 dcos_cli_url: https://downloads.dcos.io/binaries/cli/linux/x86-64/dcos-1.8/dcos
 dcos_cli_install_path: /usr/local/bin/dcos
 dcos_cli_file_mode: 0755 # -rwxr-xr-x
-dcos_install_demos: true
+dcos_install_demos: "{{ lookup('env', 'DCOS_CONTROLLER_INSTALL_DEMOS') | default(true) }}"
 
