@@ -65,7 +65,7 @@
         exact_count: 1
         count_tag: "ssh_jumphost"
         assign_public_ip: True
-        tags: {Name: dcos-ssh-jumphost, ssh_jumphost: '', dcos-controller: '', subnet: 'subnet-public'}
+        tags: {Name: dcos-ssh-jumphost, private_host: '', ansible_managed: '', python: '', ssh_jumphost: '', dcos-controller: '', subnet: 'subnet-public'}
   roles:
     - aws
 

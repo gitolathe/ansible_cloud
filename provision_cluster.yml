@@ -10,16 +10,6 @@
   pre_tasks:
     - raw: sudo apt-get -y install python
 
-#- name: Builds /etc/hosts file
-#  hosts: tag_ansible_managed
-#  become: yes
-#  become_method: sudo
-#  gather_facts: true
-#  tasks:
-#    - template:
-#        src=hosts.j2
-#        dest=/etc/hosts
-
 - name: Install Java on tagged hosts
   hosts: tag_java
   gather_facts: true
@@ -79,7 +69,7 @@
     - dcos
 
 - name: Install DCOS cli on DCOS controller hosts
-  hosts: tag_dcos_controller
+  hosts: tag_dcos_controller[0]
   gather_facts: true
   roles:
     - dcos_controller

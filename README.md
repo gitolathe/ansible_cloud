@@ -22,6 +22,14 @@ To try it out do:
 1. Run the playbook as `ansible-playbook -i ec2.py main.yml` to set up the EC2 instances.
 1. Run the playbook as `ansible-playbook -i ec2.py provision_cluster.yml` to provision the instances with Mesos, Docker, Zookeeper etc.
 
+## Environment variables
+The following environment varibles can be configured for Ansible lookup
+
+### AWS
+* AWS_EC2_KEY_PAIR: the name of the key pair to use when provisioning the cluster (EC2 instances etc.).
+* AWS_EC2_LB_CERT: the `arn` resource for the AWS ELB certificate.
+* AWS_S3_ELB_LOGS_BUCKET_NAME: the name of the S3 bucket where to store the ELB logs.
+
 ## Run a Docker container on Marathon
 
 To run a Docker container on Marathon:
