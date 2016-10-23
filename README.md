@@ -19,6 +19,7 @@ To try it out do:
    $ ssh-agent bash 
    $ ssh-add ~/.ssh/keypair.pem 
    ```
+1. The [AWS Command Line Interface](https://aws.amazon.com/cli/) must be installed, configured and the `aws` executable be on the path. Used (until Ansible 2.2 is released) to create the NAT gateway.
 1. Run the playbook as `ansible-playbook -i ec2.py main.yml` to set up the EC2 instances.
 1. Run the playbook as `ansible-playbook -i ec2.py provision_cluster.yml` to provision the instances with Mesos, Docker, Zookeeper etc.
 

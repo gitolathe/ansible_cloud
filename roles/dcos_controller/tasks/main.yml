@@ -13,6 +13,8 @@
 - name: Configure DCOS CLI to point to the first master node.
   command: dcos config set core.dcos_url "http://{{ hostvars[groups['tag_dcos_master'][0]].ec2_private_dns_name }}"
 
+- debug: var=dcos_install_demos verbosity=1
+
 - name: Install DCOS demo(s) on cluster
   include: install_demos.yml
   when: dcos_install_demos == true
