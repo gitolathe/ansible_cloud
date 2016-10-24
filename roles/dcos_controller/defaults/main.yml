@@ -5,4 +5,5 @@ dcos_cli_install_path: /usr/local/bin/dcos
 dcos_cli_file_mode: 0755 # -rwxr-xr-x
 dcos_install_demos: "{{ lookup('env', 'DCOS_CONTROLLER_INSTALL_DEMOS') | default(true, true) | bool }}"
 dcos_install_demo_sd_and_lb_nginx: "{{ lookup('env', 'DCOS_CONTROLLER_INSTALL_DEMO_SD_AND_LB_NGINX') | default(false, true) | bool }}"
+dcos_install_demo_tutum_hello_world: "{{ lookup('env', 'DCOS_CONTROLLER_INSTALL_TUTUM_HELLO_WORLD') | default(false, true) | bool }}"
 

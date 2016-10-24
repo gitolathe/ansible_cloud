@@ -1,0 +1,8 @@
+---
+
+- name: Copy 'tutum.json' to controller host.
+  copy: src=demos/tutum_hello_world/tutum.json dest=./tutum.json mode=0440
+
+- name: Launch external Tutum hello-world sample application.
+  command: dcos marathon app add ./tutum.json
+

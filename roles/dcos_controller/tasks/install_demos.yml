@@ -14,3 +14,10 @@
 - name: Install demo Service Discovery and load balancing on nginx
   include: demos/service_discovery_and_load_balancing/install_demo.yml
   when: dcos_install_demo_sd_and_lb_nginx == true
+
+- debug: var=dcos_install_demo_tutum_hello_world verbosity=1
+
+- name: Insstall demo Tutum hello-world
+  include: demos/tutum_hello_world/install_demo.yml
+  when: dcos_install_demo_tutum_hello_world == true
+
