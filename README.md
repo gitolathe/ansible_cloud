@@ -33,6 +33,7 @@ The following environment varibles can be configured for Ansible lookup
 
 ### DC/OS
 * DCOS_CONTROLLER_INSTALL_DEMOS: `true` - install demo(s) (default), `false` - skip demo installation.
+
 #### Demos
 * DCOS_CONTROLLER_INSTALL_DEMO_SD_AND_LB_NGINX: `true` - install demo setting up Nginx as described in [Service discovery and load balancing with DCOS and marathon-lb: Part 1](https://mesosphere.com/blog/2015/12/04/dcos-marathon-lb/).
 * DCOS_CONTROLLER_INSTALL_TUTUM_HELLO_WORLD: `true` - install [Tutum hello-world](https://github.com/tutumcloud/hello-world) demo.
